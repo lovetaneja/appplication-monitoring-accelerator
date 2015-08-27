@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+    <bean id="loggingProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="placeholderPrefix" value="$ama{" />
+       <property name="location" value="file:${ConfigRoot}/ama/ama.properties" />
+    </bean>
+ 
+ 	<aop:aspectj-autoproxy />   
+	<bean id="logAspect" class="com.ama.aspect.LoggingAspect" />
+	
+   	<aop:config>
+    	
+    	<aop:aspect ref="logAspect">
+        	<aop:pointcut id="logBeforePointCut" expression="$ama{startLogExpression}"/>			
+			<aop:before pointcut-ref="logBeforePointCut" method="logBefore"/>
+ 
+        	<aop:pointcut id="logAroundPointCut" expression="$ama{performanceExpression}"/>			
+			<aop:around pointcut-ref="logAroundPointCut" method="profile"/>
+ 
+        	<aop:pointcut id="logAfterPointCut" expression="$ama{endLogExpression}"/>			
+			<aop:after pointcut-ref="logAfterPointCut" method="logAfter"/>			
+      	</aop:aspect>
+      	      	
+   </aop:config>
+
+</beans>

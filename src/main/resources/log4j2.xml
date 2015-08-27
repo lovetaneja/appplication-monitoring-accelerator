@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+	<CustomLevels>
+		<CustomLevel name="MONITOR" intLevel="200" />
+	</CustomLevels>
+	<Appenders>
+		<RandomAccessFile  name="FILE" fileName="C:/log4j-application.log" immediateFlush="false" append="true">
+			<PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}] - [%7p] - %X{requestId} - %m%n "/>
+		</RandomAccessFile>
+	</Appenders>
+	<Loggers>
+		<AsyncLogger name="com.ama" level="MONITOR" includeLocation="true" additivity="true"> 
+			<AppenderRef ref="FILE"/>
+		</AsyncLogger>
+	</Loggers>	
+</Configuration>
